@@ -9,4 +9,4 @@
 
     - Employment_Status -> 'Children or Armed Forces' 이상함
         - Armed Forces는 한 명임을 확인했는데 나이 분포는 전체적으로 퍼져 있음
-    - 해당 카테고리 working/not working으로 처리 고려
+    - 해당 카테고리 working/not working으로 처리 고려 / drop
