@@ -1,15 +1,16 @@
-## 현재 best : stratify_0322
+## 현재 best : stratify_0323_engineering_3
 - education, income_status 수정
 - gradientboostingregressor **depth 4**
-- income>850으로 stratify
+- income>875으로 stratify
 
 - stratify_0323_engineering_1 : household, tax 수정, ohe 추가 -> 596.04
 - stratify_0323_engineering_2 : household, tax 수정, ohe 추가 + working week 수정 -> 595.02
-- stratify_0323_engineering_3 : household, tax 수정, ohe 추가 + working week 수정 + capital 추가 -> 594.85
-- **stratify_0323_engineering_4 : household, tax 수정, ohe 추가 + working week 수정 + capital 추가 + age -> 594.70**
+- **stratify_0323_engineering_3 : household, tax 수정, ohe 추가 + working week 수정 + capital 추가 -> 594.85**
+- stratify_0323_engineering_4 : household, tax 수정, ohe 추가 + working week 수정 + capital 추가 + age -> 594.70
 
 
 ## rmse -> 큰 값을 잘 맞춰야 함 (1000 이상 / 2000 이상)
+- stratify
 
 ## Income 분포 처리 관련
 
