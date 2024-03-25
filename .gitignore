@@ -5,7 +5,3 @@ submission/
 
 models/ 
 *.pkl
-
-*.csv
-
-target_eda.ipynb

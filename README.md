@@ -1,11 +1,13 @@
 ## 중복행 존재 확인
-- income 제외 중복 1680행
-- income 포함 중복 1499행
+- **income 제외 중복 1680행 [now best]**
+- income 포함 중복 1499행 -> 한 행만 남기고 drop
 
-- income 제외 중복인 데이터 408개 & income이 다른 경우 19개
+- income 제외 중복인 데이터 408개 (feature가 같은 데이터가 2개 이상)
+- income이 다른 경우 159개 -> max/avg만 남기고 나머지 drop
+- drop_duplicated_2_outliers_2 (max) | drop_duplicated_3_outliers_2 (min)
 
 ## outlier 제거 고려
-- income status = under median 에 속하는 데이터 중 income outlier 제거
+- **income status = under median / income status = over median 범주 내 outlier 제거 [now best]**
 
 ## 현재 best : stratify_0323_engineering_3
 - education, income_status 수정
