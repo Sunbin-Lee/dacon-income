@@ -27,10 +27,10 @@ parser.add_argument('--max_iter', type=float, default=200)
 
 args = parser.parse_args()
 
-name = f'hidden_{args.hidden_layer_sizes}_lr_{args.learning_rate_init}_alpha_{args.alpha}_max_iter_{args.max_iter}'
+name = f'hidden_{args.hidden_layer_sizes}_alpha_{args.alpha}_max_iter_{args.max_iter}'
 
-with open('data.pkl', 'rb') as f:
-    trainval_x, trainval_y, test_x, income_cat = pickle.load(f)
+with open('data_1.pkl', 'rb') as f:
+    trainval_x, trainval_y, test_x, income_over = pickle.load(f)
 
 kf = StratifiedKFold(n_splits=5, shuffle=True)
 
@@ -41,7 +41,7 @@ num_fold = 1
 
 train_errors = [name]
 val_errors = [name]
-for train_idx, val_idx in kf.split(trainval_x, income_cat):
+for train_idx, val_idx in kf.split(trainval_x, income_over):
     train_x = trainval_x.iloc[train_idx]
     train_y = trainval_y.iloc[train_idx]
     # print(train_x.shape)

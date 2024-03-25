@@ -57,7 +57,8 @@ test_x = test.drop(columns=['ID',
                             'Gains', 'Losses', 'Dividends'
                             ])
 
-income_cat = train['Income'].apply(income_cat)
+# income_cat = train['Income'].apply(income_cat)
+income_over = train['Income'] > 875
 
 encoding_target = list(trainval_x.dtypes[trainval_x.dtypes == "object"].index)
 
@@ -95,5 +96,5 @@ for i in encoding_target:
     test_x = pd.concat([test_x.drop(columns=[i]), test_encoded_df], axis=1)
 
 
-with open('data.pkl', 'wb') as f:
-    pickle.dump([trainval_x, trainval_y, test_x, income_cat], f)
+with open('data_1.pkl', 'wb') as f:
+    pickle.dump([trainval_x, trainval_y, test_x, income_over], f)
