@@ -22,9 +22,9 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--learning_rate', type=float, default=0.1)
 parser.add_argument('--n_estimators', type=float, default=100)
-parser.add_argument('--max_depth', type=float, default=100)
-parser.add_argument('--min_samples_split', type=float, default=100)
-parser.add_argument('--min_samples_leaf', type=float, default=100)
+parser.add_argument('--max_depth', type=float, default=3)
+parser.add_argument('--min_samples_split', type=float, default=2)
+parser.add_argument('--min_samples_leaf', type=float, default=1)
 
 args = parser.parse_args()
 
@@ -59,8 +59,8 @@ for train_idx, val_idx in kf.split(trainval_x, income_over):
     gbr = GradientBoostingRegressor(learning_rate = args.learning_rate,
                                     n_estimators = int(args.n_estimators),
                                     max_depth = int(args.max_depth),
-                                    min_samples_split = int(args.min_samples_split),
-                                    min_samples_leaf = int(args.min_samples_leaf)
+                                    min_samples_split = int(args.min_samples_split), # 노드 분할을 위한 최소 샘플 수
+                                    min_samples_leaf = int(args.min_samples_leaf) # 리프노드 최소 샘플 수
                                     )
     gbr.fit(train_x, train_y)
 

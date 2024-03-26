@@ -25,8 +25,8 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--learning_rate', type=float, default=0.1)
 parser.add_argument('--n_estimators', type=float, default=100)
-parser.add_argument('--max_depth', type=float, default=100)
-parser.add_argument('--min_child_weight', type=float, default=1)
+parser.add_argument('--max_depth', type=float, default=6)
+parser.add_argument('--min_child_weight', type=float, default=1) # 리프노드 최소 샘플 수
 
 
 args = parser.parse_args()
