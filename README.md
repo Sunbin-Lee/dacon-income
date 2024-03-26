@@ -8,6 +8,9 @@
 - [xgboost, lgbm 등 외부 패키지 사용 고려 및 모델 탐색]
     - xgboost 패키지 하이퍼파라미터 튜닝 시도
 
+- [gbr] min_samples_split 2 4 / min_samples_leaf 1 2 4 탐색 -> 늘려서 탐색 (추가로 더 해볼 예정)
+- [xgb] min_child_weight 1, 2, 5, 10 -> 늘려서 탐색 (x)
+
 ## 중복행 존재 확인
 - income 제외 중복 1680행
 - **income 포함 중복 1499행 -> 한 행만 남기고 drop**
