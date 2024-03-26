@@ -14,6 +14,9 @@ from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_squared_error
 
+import xgboost
+from xgboost import XGBRegressor
+
 from utils import *
 
 seed_everything(42) # Seed 고정
@@ -23,12 +26,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--learning_rate', type=float, default=0.1)
 parser.add_argument('--n_estimators', type=float, default=100)
 parser.add_argument('--max_depth', type=float, default=100)
-parser.add_argument('--min_samples_split', type=float, default=100)
-parser.add_argument('--min_samples_leaf', type=float, default=100)
+parser.add_argument('--min_child_weight', type=float, default=1)
+
 
 args = parser.parse_args()
 
-name = f'lr_{args.learning_rate}_n_{int(args.n_estimators)}_d_{int(args.max_depth)}_s_{int(args.min_samples_split)}_leaf_{int(args.min_samples_leaf)}'
+name = f'n_{int(args.n_estimators)}_lr_{args.learning_rate}_d_{int(args.max_depth)}_child_{int(args.min_child_weight)}'
 
 with open('data.pkl', 'rb') as f:
     trainval_x, trainval_y, test_x, income_over = pickle.load(f)
@@ -56,26 +59,25 @@ for train_idx, val_idx in kf.split(trainval_x, income_over):
     fold_train_y_preds = []
     fold_val_y_preds = []
 
-    gbr = GradientBoostingRegressor(learning_rate = args.learning_rate,
-                                    n_estimators = int(args.n_estimators),
-                                    max_depth = int(args.max_depth),
-                                    min_samples_split = int(args.min_samples_split),
-                                    min_samples_leaf = int(args.min_samples_leaf)
-                                    )
-    gbr.fit(train_x, train_y)
+    xgb = XGBRegressor(learning_rate = args.learning_rate,
+                       max_depth = int(args.max_depth),
+                       n_estimators = int(args.n_estimators),
+                       min_child_weight = int(args.min_child_weight)
+                       )
+    xgb.fit(train_x, train_y)
 
-    train_y_hat_gbr = gbr.predict(train_x)
-    val_y_hat_gbr = gbr.predict(val_x)
+    train_y_hat_xgb = xgb.predict(train_x)
+    val_y_hat_xgb = xgb.predict(val_x)
 
-    fold_train_y_preds.append(train_y_hat_gbr)
-    fold_val_y_preds.append(val_y_hat_gbr)
+    fold_train_y_preds.append(train_y_hat_xgb)
+    fold_val_y_preds.append(val_y_hat_xgb)
 
-    # pred_gbr = gbr.predict(test_x)
+    # pred_xgb = xgb.predict(test_x)
 
-    # test_preds.append(pred_gbr)
+    # test_preds.append(pred_xgb)
 
-    train_error = mean_squared_error(train_y, train_y_hat_gbr) ** 0.5
-    val_error = mean_squared_error(val_y, val_y_hat_gbr) ** 0.5
+    train_error = mean_squared_error(train_y, train_y_hat_xgb) ** 0.5
+    val_error = mean_squared_error(val_y, val_y_hat_xgb) ** 0.5
 
     train_errors.append(np.round(train_error, 2))
     val_errors.append(np.round(val_error, 2))
@@ -95,9 +97,7 @@ val_errors.append(np.round(avg_val_error, 2))
 # final_pred = np.array(test_preds).mean(0)
 # final_pred_post = np.where(final_pred<0, 0, final_pred)
 
-# print(sum(final_pred_post>2000))
-
-f = open('gbr.csv', 'a', newline='')
+f = open('xgb.csv', 'a', newline='')
 wr = csv.writer(f)
 wr.writerow(train_errors)
 wr.writerow(val_errors)
@@ -105,4 +105,4 @@ f.close()
 
 # submission = pd.read_csv('data/sample_submission.csv')
 # submission['Income'] = final_pred_post
-# submission.to_csv(f'submission/gbr_{name}.csv', index=False)
+# submission.to_csv(f'submission/xgb_{name}.csv', index=False)
