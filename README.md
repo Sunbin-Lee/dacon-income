@@ -3,8 +3,10 @@
 - mlp **activation='tanh', max_iter=500** 
 - rf max_depth 조절해도 성능 안 좋았음
 - **gbr + mlp 앙상블로 성능 많이 높임 [now best] [성능 많이 향상]**
-- [xgboost, lgbm 등 외부 패키지 사용 고려 및 모델 탐색]
+- [gbr(463.77)/mlp(462.23) 예측시 output 분포 확인] - mlp가 조금 더 작게 예측하는 편
 
+- [xgboost, lgbm 등 외부 패키지 사용 고려 및 모델 탐색]
+    - xgboost 패키지 하이퍼파라미터 튜닝 시도
 
 ## 중복행 존재 확인
 - income 제외 중복 1680행
@@ -15,7 +17,9 @@
 - income이 다른 경우 159개 -> max/avg만 남기고 나머지 drop
 - drop_duplicated_2_outliers_2 (max) | drop_duplicated_3_outliers_2 (avg)
 
-- [feature engineering 후 중복행 처리 고려]
+- feature engineering 후 중복행 처리 고려 -> 효과 x
+    - 그냥 drop : 성능 감소
+    - avg 고려 중 : 성능 감소
 
 ## outlier 제거 [성능 많이 향상]
 - **income status = under median / income status = over median 범주 내 outlier 제거 [now best]**
