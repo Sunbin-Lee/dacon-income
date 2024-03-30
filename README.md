@@ -11,7 +11,7 @@
 - ~~[xgb] min_child_weight 1, 2, 5, 10 -> 늘려서 탐색 -> 20 이상은 의미 x~~
 - ~~val_n_200_lr_0.1_d_4_child_16~~
 - [mlp] hyperparameter search 필요
-- scaling 고려 : 성능 감소
+- scaling 고려 : 수렴 속도 때문에 하는 게 맞는 것 같고, learning rate 조절 필요
 
 ## 중복행 존재 확인
 - income 제외 중복 1680행
