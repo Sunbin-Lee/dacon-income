@@ -14,20 +14,25 @@ from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_squared_error
 
+import warnings
+warnings.filterwarnings('ignore')
+
 from utils import *
 
 seed_everything(42) # Seed 고정
 
 parser = argparse.ArgumentParser()
 
+parser.add_argument('--activation_ftn', type=str, default='tanh')
 parser.add_argument('--hidden_layer_sizes', type=float, default=100)
 parser.add_argument('--learning_rate_init', type=float, default=1e-3)
 parser.add_argument('--alpha', type=float, default=1e-4)
-parser.add_argument('--max_iter', type=float, default=200)
+parser.add_argument('--max_iter', type=float, default=80)
+parser.add_argument('--learning_rate', type=str, default='constant')
 
 args = parser.parse_args()
 
-name = f'hidden_{args.hidden_layer_sizes}_alpha_{args.alpha}_max_iter_{args.max_iter}'
+name = f'sgd_{args.learning_rate}_hidden_{int(args.hidden_layer_sizes)}_lr_{args.learning_rate_init}_alpha_{args.alpha}_max_iter_{int(args.max_iter)}'
 
 with open('data.pkl', 'rb') as f:
     trainval_x, trainval_y, test_x, income_over = pickle.load(f)
@@ -39,6 +44,8 @@ os.makedirs(model_path, exist_ok=True)
 
 num_fold = 1
 
+numeric_cols = ['Age', 'Working_Week (Yearly)']
+
 train_errors = [name]
 val_errors = [name]
 for train_idx, val_idx in kf.split(trainval_x, income_over):
@@ -49,30 +56,41 @@ for train_idx, val_idx in kf.split(trainval_x, income_over):
     val_x = trainval_x.iloc[val_idx]
     val_y = trainval_y.iloc[val_idx]
 
-    fold_train_y_preds = []
-    fold_val_y_preds = []
+    #### scaling
+    scaler_x = StandardScaler()
+    train_x.loc[:, numeric_cols] = scaler_x.fit_transform(train_x[numeric_cols])
+    val_x.loc[:, numeric_cols] = scaler_x.transform(val_x[numeric_cols])
+    test_x.loc[:, numeric_cols] = scaler_x.transform(test_x[numeric_cols])
 
-    mlp = MLPRegressor(activation = 'tanh', 
+    scaler_y = StandardScaler()
+    train_y_scaled = scaler_y.fit_transform(train_y.values.reshape(-1,1)).squeeze()
+    # train_y_scaled = scaler_y.transform(train_y.values.reshape(-1,1)).squeeze()
+    ####################################################################################
+
+    # fold_train_y_preds = []
+    # fold_val_y_preds = []
+
+    mlp = MLPRegressor(activation = args.activation_ftn, 
                        hidden_layer_sizes = (int(args.hidden_layer_sizes),),
                        learning_rate_init = args.learning_rate_init,
                        alpha = args.alpha,
-                       max_iter = int(args.max_iter)
+                       max_iter = int(args.max_iter),
+                       solver = 'sgd',
+                       learning_rate= args.learning_rate
                        ) 
-    mlp.fit(train_x, train_y)
-
-    # with open(f'{model_path}/mlp_{num_fold}.pkl', 'wb') as f:
-    #     pickle.dump(mlp, f)
+    mlp.fit(train_x, train_y_scaled)
 
     train_y_hat_mlp = mlp.predict(train_x)
     val_y_hat_mlp = mlp.predict(val_x)
 
-    fold_train_y_preds.append(train_y_hat_mlp)
-    fold_val_y_preds.append(val_y_hat_mlp)
+    train_y_hat_mlp_inverse = scaler_y.inverse_transform(train_y_hat_mlp.reshape(-1,1)).squeeze()
+    val_y_hat_mlp_inverse = scaler_y.inverse_transform(val_y_hat_mlp.reshape(-1,1)).squeeze()
 
-    # pred_mlp = mlp.predict(test_x)
+    pred_mlp = mlp.predict(test_x)
+    pred_mlp_inverse = scaler_y.inverse_transform(pred_mlp.reshape(-1,1)).squeeze()
 
-    train_error = mean_squared_error(train_y, train_y_hat_mlp) ** 0.5
-    val_error = mean_squared_error(val_y, val_y_hat_mlp) ** 0.5
+    train_error = mean_squared_error(train_y, train_y_hat_mlp_inverse) ** 0.5
+    val_error = mean_squared_error(val_y, val_y_hat_mlp_inverse) ** 0.5
 
     train_errors.append(np.round(train_error, 2))
     val_errors.append(np.round(val_error, 2))
