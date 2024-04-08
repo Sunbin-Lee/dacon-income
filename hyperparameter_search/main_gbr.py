@@ -37,7 +37,7 @@ with open('data.pkl', 'rb') as f:
 
 kf = StratifiedKFold(n_splits=5, shuffle=True)
 
-model_path = f'models/{name}'
+# model_path = f'models/{name}'
 # os.makedirs(model_path, exist_ok=True)
 
 num_fold = 1

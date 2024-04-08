@@ -1764,3 +1764,5 @@ sgd_adaptive_hidden_200_lr_1e-05_alpha_1e-08_max_iter_100,506.46,502.28,507.19,5
 sgd_adaptive_hidden_200_lr_1e-05_alpha_1e-08_max_iter_100,507.75,506.66,495.5,525.76,501.63,507.46
 sgd_adaptive_hidden_200_lr_1e-05_alpha_1e-08_max_iter_200,498.1,506.75,499.61,495.92,500.26,500.13
 sgd_adaptive_hidden_200_lr_1e-05_alpha_1e-08_max_iter_200,500.62,512.23,485.19,512.18,489.13,499.87
+sgd_constant_hidden_100_lr_0.001_alpha_0.0001_max_iter_80,469.03,467.34,473.05,466.44,471.55,469.48
+sgd_constant_hidden_100_lr_0.001_alpha_0.0001_max_iter_80,476.04,479.8,458.65,485.53,463.11,472.63

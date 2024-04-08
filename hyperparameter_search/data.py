@@ -11,8 +11,8 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 
 from utils import *
 
-train = pd.read_csv('data/train.csv')
-test = pd.read_csv('data/test.csv')
+train = pd.read_csv('../data/train.csv')
+test = pd.read_csv('../data/test.csv')
 
 
 ## drop duplicated
