@@ -30,12 +30,12 @@ sklearn 0.24.1
 - income 제외 중복 1680행
 - **income 포함 중복 1499행 -> drop**
 
-### outlier 제거 [성능 많이 향상]
-- **income status = under median / income status = over median 범주 내 outlier 제거**
-
 ### feature engineering
 - education_status, income_status 수정
 - gain, loss, dividend binary 처리
+
+### outlier 제거 [성능 많이 향상]
+- **income status = under median / income status = over median 범주 내 outlier 제거**
 
 ### income 범위 기준 stratify 앙상블
 - stratify (income 범위 기준)
